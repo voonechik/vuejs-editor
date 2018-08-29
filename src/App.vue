@@ -2,19 +2,9 @@
 
   main.main.grey.lighten-2
     .container
-      AppEditor
+      router-view
 
 </template>
-
-<script>
-import AppEditor from './editor/AppEditor.vue';
-
-export default {
-  components: {
-    AppEditor
-  }
-}
-</script>
 
 <style lang="sass">
 
@@ -25,6 +15,6 @@ export default {
 
 .main
   padding: 70px 0
-  height: 100vh
+  min-height: 100vh
 
 </style>

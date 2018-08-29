@@ -22,7 +22,7 @@ import {eventBus} from '../main';
 export default {
   data() {
     return {
-      contentItemIncrement: 1
+      contentItemIncrement: 0
     };
   },
 
@@ -30,13 +30,15 @@ export default {
     addTitle() {
       let i = this.contentItemIncrement++;
       let totalContentType = 'title' + i;
-      eventBus.addContent(totalContentType);
+
+      this.$store.commit('CHANGE_ADDED_CONTENT', totalContentType);
     },
 
     addText() {
       let i = this.contentItemIncrement++;
       let totalContentType = 'text' + i;
-      eventBus.addContent(totalContentType);
+
+      this.$store.commit('CHANGE_ADDED_CONTENT', totalContentType);
     }
   }   
 }

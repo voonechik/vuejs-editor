@@ -16,10 +16,11 @@
           .options
             i.options__icon.options__icon_drag.material-icons drag_handle
             i.options__icon.material-icons(@click='deleteTitle(index)') delete
-          h3(
-              @click='showToolbar'
-              class='content-block__title' 
-              contenteditable='true') Title
+          .content-wrap(ref='contentWrap')
+            h3(
+                @click='showToolbar'
+                class='content-block__title' 
+                contenteditable='true') Title
 
       section(
               class='content-section ui-state-default'
@@ -34,10 +35,11 @@
             .options.options_text
               i.options__icon.options__icon_drag.material-icons drag_handle
               i.options__icon.material-icons(@click='deleteText(index)') delete 
-            p(
-              @click='showToolbar'
-              class='content-block__content content-block__text' 
-              contenteditable='true') Text
+            .content-wrap
+              p(
+                @click='showToolbar'
+                class='content-block__content content-block__text' 
+                contenteditable='true') Text
 
       .toolbar(
                 :style='{ top, left }'
@@ -56,7 +58,7 @@ import {eventBus} from '../main';
 export default {
   data() {
     return {
-      typeContent: '',
+      typeContent: this.$store.state.addedContent,
       toolbar: false,
       top: '',
       left: '',
@@ -150,10 +152,6 @@ export default {
     }
   },
   created() {
-    eventBus.$on('contentAdded', contentType => {
-      this.typeContent = contentType;
-    });
-
     $(function() {
       $("#sortable" ).sortable({
         connectWith: ".content-section",
@@ -163,7 +161,6 @@ export default {
       });
       // $("#sortable" ).disableSelection();
     });
-
   }
 }
 </script>
