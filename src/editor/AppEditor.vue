@@ -12,19 +12,20 @@
 <script>
 import AddedContent from './AddedContent.vue';
 import ActionButtons from './ActionButtons.vue';
-import {eventBus} from '../main';
 
 export default {
   methods: {
     getEditorContent() {
-      var content = [];
-      $('.content-wrap').each(function(index, element) {
-        content.push(($(element).html()));
+      let content = [];
+      let contentWrap = document.getElementsByClassName('content-wrap');
+
+      Array.prototype.map.call(contentWrap, function(element) {
+        content.push(element.innerHTML);
       });
-      var totalContent = content + '';
-      var ftotalContent = totalContent.replace(/contenteditable="true"/g, '').replace(/,/g, '');
       
-      this.$store.commit('CHANGE_PREVIEW_CONTENT', ftotalContent);
+      let transformContentToString = content + '';
+      let totalContent = transformContentToString.replace(/contenteditable="true"/g, '').replace(/,/g, '');
+      this.$store.commit('CHANGE_PREVIEW_CONTENT', totalContent);
     }
   },
   components: { AddedContent, ActionButtons }

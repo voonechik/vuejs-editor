@@ -1,14 +1,14 @@
 <template lang="pug">
   
   div.preview-wrap
-    router-link(to='/' class='preview-wrap__editor-link') Editor
-    div.preview.z-depth-1(v-html='preview')
+    router-link(to='/' 
+                class='preview-wrap__editor-link') Editor
+    div(v-html='preview'
+        class='preview z-depth-1')
 
 </template>
 
 <script>
-import {eventBus} from '../main';
-
 export default {
   data() {
     return {

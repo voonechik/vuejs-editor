@@ -5,7 +5,7 @@
       section(
               class='content-section ui-state-default'
               v-for='(addedContentItem, index) in typeContent'
-              v-if='new RegExp("title").test(addedContentItem)'
+              v-if='/title/.test(addedContentItem)'
               :key='addedContentItem+index')
         
         div.add-between
@@ -24,27 +24,27 @@
 
       section(
               class='content-section ui-state-default'
-              v-else-if='new RegExp("text").test(addedContentItem)'
+              v-else-if='/text/.test(addedContentItem)'
               :key='addedContentItem+index'
               )
-          div.add-between
-            button(type='button' class='waves-effect btn-floating')
-              i.material-icons add
-            span
-          .content-block
-            .options.options_text
-              i.options__icon.options__icon_drag.material-icons drag_handle
-              i.options__icon.material-icons(@click='deleteText(index)') delete 
-            .content-wrap
-              p(
-                @click='showToolbar'
-                class='content-block__content content-block__text' 
-                contenteditable='true') Text
+
+        div.add-between
+          button(type='button' class='waves-effect btn-floating')
+            i.material-icons add
+          span
+        .content-block
+          .options.options_text
+            i.options__icon.options__icon_drag.material-icons drag_handle
+            i.options__icon.material-icons(@click='deleteText(index)') delete 
+          .content-wrap
+            p(
+              @click='showToolbar'
+              class='content-block__content content-block__text' 
+              contenteditable='true') Text
 
       .toolbar(
                 :style='{ top, left }'
-                v-if='toolbar' 
-                ref='toolBar')
+                v-if='toolbar')
         i(
           @mousedown='exec(button.styleName[0])'
           v-for='button in buttons'
@@ -58,32 +58,11 @@ import {eventBus} from '../main';
 export default {
   data() {
     return {
-      typeContent: this.$store.state.addedContent,
       toolbar: false,
       top: '',
       left: '',
-      buttons: [
-        {
-          className: 'format_bold',
-          styleName: ['bold'],
-        },
-        {
-          className: 'format_italic',
-          styleName: ['italic'],
-        },
-        {
-          className: 'format_align_left',
-          styleName: ['justifyLeft'],
-        },
-        {
-          className: 'format_align_center',
-          styleName: ['justifyCenter'],
-        },
-        {
-          className: 'format_align_right',
-          styleName: ['justifyRight'],
-        }
-      ]
+      buttons: this.$store.state.buttons,
+      typeContent: this.$store.state.addedContent
     }
   },
   methods: {
