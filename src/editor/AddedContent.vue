@@ -1,13 +1,15 @@
 <template lang="pug">
 
-    div#sortable
+  div
 
-      section(
-              class='content-section ui-state-default'
-              v-for='(addedContentItem, index) in typeContent'
+    draggable( 
+              :options="{dragClass: 'srt', animation: 400, chosenClass: 's-chosen', handle: '.options__icon_drag', ghostClass: 'content-section__drop-placeholder'}" 
+              @start="drag=true" 
+              @end="drag=false")
+      section(v-for="(addedContentItem, index) in typeContent" 
+              :key="addedContentItem+index" 
               v-if='/title/.test(addedContentItem)'
-              :key='addedContentItem+index')
-        
+              class='content-section') 
         div.add-between
           button(type='button' class='waves-effect btn-floating')
             i.material-icons add
@@ -23,11 +25,9 @@
                 contenteditable='true') Title
 
       section(
-              class='content-section ui-state-default'
+              class='content-section'
               v-else-if='/text/.test(addedContentItem)'
-              :key='addedContentItem+index'
-              )
-
+              :key='addedContentItem+index')
         div.add-between
           button(type='button' class='waves-effect btn-floating')
             i.material-icons add
@@ -41,21 +41,28 @@
               @click='showToolbar'
               class='content-block__content content-block__text' 
               contenteditable='true') Text
-
-      .toolbar(
-                :style='{ top, left }'
-                v-if='toolbar')
-        i(
-          @mousedown='exec(button.styleName[0])'
-          v-for='button in buttons'
-          class='toolbar__icon material-icons') {{button.className}}
+    .toolbar(
+              :style='{ top, left }'
+              v-if='toolbar')
+      i(
+        @mousedown='exec(button.styleName[0])'
+        v-for='button in buttons'
+        v-if='button.className !== "divider"'
+        :key='button.className'
+        class='toolbar__icon material-icons') {{button.className}}
+      i(
+        class='toolbar__divider'
+        v-else)
 
 </template>
 
 <script>
-import {eventBus} from '../main';
+import draggable from 'vuedraggable';
 
 export default {
+  components: {
+    draggable
+  },
   data() {
     return {
       toolbar: false,
@@ -131,15 +138,15 @@ export default {
     }
   },
   created() {
-    $(function() {
-      $("#sortable" ).sortable({
-        connectWith: ".content-section",
-        handle: '.options__icon_drag',
-        placeholder: "ui-state-highlight",
-        forcePlaceholderSize: true
-      });
-      // $("#sortable" ).disableSelection();
-    });
+    // $(function() {
+    //   $("#sortable" ).sortable({
+    //     connectWith: ".content-section",
+    //     handle: '.options__icon_drag',
+    //     placeholder: "ui-state-highlight",
+    //     forcePlaceholderSize: true
+    //   });
+    //   // $("#sortable" ).disableSelection();
+    // });
   }
 }
 </script>
@@ -230,7 +237,8 @@ export default {
     padding: 7px
     position: absolute
     background: #212121
-    width: 190px
+    width: 280px
+    z-index: 999
     height: 40px
     border-radius: 5px
     transform: translateX(-50%)
@@ -240,11 +248,26 @@ export default {
     z-index: 999
     cursor: pointer
 
-  .ui-state-highlight
-    display: block
-    border: 2px dashed #424242
+  .toolbar__divider
+    width: 1px
+    height: 100%
+    margin: 5px
+    background: #e0e0e0
+
+  .content-section__drop-placeholder
+    position: relative
     margin: 0 80px
-    border-radius: 6px
-    background: #4242423d
+    opacity: 1
+    &:before
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      border: 2px dashed #424242
+      border-radius: 6px
+      background: #e0e0e0
+      opacity: 1
 
 </style>
