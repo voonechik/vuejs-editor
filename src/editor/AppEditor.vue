@@ -2,7 +2,7 @@
 
   .editor-wrap
     .action-buttons
-      a(href='#!') Preview
+      router-link(to='/preview' @click.native='getEditorContent') Preview
       ActionButtons
     .editor-area.z-depth-1
       AddedContent
@@ -14,6 +14,20 @@ import AddedContent from './AddedContent.vue';
 import ActionButtons from './ActionButtons.vue';
 
 export default {
+  methods: {
+    getEditorContent() {
+      let content = [];
+      let contentWrap = document.getElementsByClassName('content-wrap');
+
+      Array.prototype.map.call(contentWrap, function(element) {
+        content.push(element.innerHTML);
+      });
+      
+      let transformContentToString = content + '';
+      let totalContent = transformContentToString.replace(/contenteditable="true"/g, '').replace(/,/g, '');
+      this.$store.commit('CHANGE_PREVIEW_CONTENT', totalContent);
+    }
+  },
   components: { AddedContent, ActionButtons }
 }
 </script>
@@ -33,6 +47,6 @@ export default {
     min-height: 450px
     background: #fff
     border-radius: 6px
-    padding: 16px 0
+    padding: 16px 0 28px
 
 </style>
